@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- デザイン定義 --- */
+        /* --- 基本設定 --- */
         body {
             margin: 0;
             padding: 0;
@@ -39,18 +39,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* アニメーション */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* FAQ アコーディオン */
+        /* FAQ アコーディオン動作 */
         .faq-answer {
             max-height: 0;
             opacity: 0;
@@ -65,9 +54,14 @@
         }
         .faq-toggle.active + .faq-answer {
             opacity: 1;
+            max-height: 500px;
         }
+        
+        /* ホバー時の挙動 */
+        .group:hover .group-hover\:text-slate-900 { color: #0f172a; }
+        .group:hover .group-hover\:bg-gold { background-color: #D4AF37; }
+        .group:hover .group-hover\:border-gold { border-color: #D4AF37; }
 
-        /* ユーティリティ */
         img, svg { max-width: 100%; height: auto; }
         a { text-decoration: none !important; }
         button { cursor: pointer; }
@@ -77,24 +71,24 @@
 
 <div class="lp-wrapper">
 
-    <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700">
-        <div class="max-w-7xl mx-auto px-4 md:px-6 py-2 flex justify-between items-center">
+    <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-md border-b border-slate-700">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-3 flex justify-between items-center">
             <div class="flex flex-col">
-                <span class="text-[10px] md:text-sm text-gold tracking-wider mb-1">タワーマンション オーナーチェンジ物件特化 購入サポート「タワー アービトラージ」</span>
+                <span class="text-[10px] md:text-xs text-gold tracking-wider mb-1">タワーマンション オーナーチェンジ物件特化 購入サポート</span>
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded bg-gold-gradient flex items-center justify-center">
+                    <div class="w-8 h-8 rounded bg-gold-gradient flex items-center justify-center shrink-0">
                         <span class="text-slate-900 font-bold text-lg">T</span>
                     </div>
                     <span class="font-serif text-xl md:text-2xl font-bold tracking-widest text-white">TOWER ARBITRAGE</span>
                 </div>
             </div>
-            <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="hidden md:block bg-gold-gradient text-slate-900 font-bold px-6 py-2 rounded shadow-[0_0_10px_rgba(212,175,55,0.3)] hover:scale-105 transition-all duration-300 text-sm tracking-widest uppercase">
+            <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="hidden md:block bg-gold-gradient text-slate-900 font-bold px-6 py-2 rounded shadow-md hover:scale-105 transition-all duration-300 text-sm tracking-widest uppercase">
                 無料提案依頼
             </a>
         </div>
     </header>
 
-    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden">
         <div class="absolute inset-0 z-0 pointer-events-none">
             <div class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-slate-800 to-transparent opacity-30"></div>
             <div class="absolute bottom-0 left-0 w-1/3 h-2/3 bg-gradient-to-t from-slate-800 to-transparent opacity-30"></div>
@@ -102,7 +96,7 @@
         </div>
 
         <div class="container mx-auto px-4 relative z-10 text-center">
-            <div class="fade-in-section">
+            <div class="mb-8">
                 <h1 class="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
                     <span class="block mb-4 text-white">タワーマンションの</span>
                     <span class="block mb-4 text-gold-gradient">投資物件と実需物件の市場価格差を</span>
@@ -110,16 +104,16 @@
                 </h1>
             </div>
 
-            <div class="fade-in-section" style="transition-delay: 200ms;">
-                <p class="text-slate-300 text-sm md:text-lg leading-relaxed max-w-3xl mx-auto mb-12">
+            <div class="mb-12">
+                <p class="text-slate-300 text-sm md:text-lg leading-relaxed max-w-3xl mx-auto">
                     中古タワーマンションのオーナーチェンジ物件は、借主入居中であるため<br class="hidden md:block"/>
                     <span class="text-white font-bold border-b border-gold">市場価格より20~30%割安</span>に購入できます。<br/>
                     借主退去後に居住用物件として売り出すことで、<span class="text-white font-bold border-b border-gold">市場価格での売却が見込めます</span>。
                 </p>
             </div>
 
-            <div class="fade-in-section flex flex-col items-center gap-3" style="transition-delay: 400ms;">
-                <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="inline-flex items-center justify-center bg-gold-gradient text-slate-900 font-bold py-4 px-8 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 text-lg md:text-xl w-full md:w-auto text-center">
+            <div class="flex flex-col items-center gap-3">
+                <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="inline-flex items-center justify-center bg-gold-gradient text-slate-900 font-bold py-4 px-8 rounded-full shadow-lg hover:scale-105 transition-all duration-300 text-lg md:text-xl w-full md:w-auto text-center">
                     無料で含み益物件の提案を受ける
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="m9 18 6-6-6-6"/></svg>
                 </a>
@@ -139,7 +133,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="fade-in-section space-y-6">
+                <div class="space-y-6">
                     <p class="text-lg leading-relaxed text-slate-300">
                         不動産の価格は、その物件が<strong class="text-white">「投資用」</strong>か<strong class="text-white">「実需用（居住用）」</strong>かによって評価基準が全く異なります。
                     </p>
@@ -151,11 +145,7 @@
                     </p>
                 </div>
 
-                <div class="fade-in-section bg-slate-900 p-8 rounded-xl border border-slate-700 shadow-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <svg class="text-gold" width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-                    </div>
-
+                <div class="bg-slate-900 p-8 rounded-xl border border-slate-700 shadow-2xl relative overflow-hidden">
                     <div class="flex flex-col gap-8 relative z-10">
                         <div>
                             <div class="flex justify-between items-end mb-2">
@@ -171,4 +161,437 @@
 
                         <div class="flex items-center gap-4 text-gold">
                             <div class="flex-1 h-px bg-gold/30"></div>
-                            <div class="
+                            <div class="flex flex-col items-center">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                                <span class="font-bold text-xl md:text-3xl whitespace-nowrap mt-1">2,000万円の価格差</span>
+                                <span class="text-sm md:text-base opacity-80">(キャピタルゲイン源泉)</span>
+                            </div>
+                            <div class="flex-1 h-px bg-gold/30"></div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-end mb-2">
+                                <span class="text-white font-bold">実需（空室）市場価格</span>
+                                <span class="text-3xl font-bold text-gold">10,000万円</span>
+                            </div>
+                            <div class="h-12 bg-gold-gradient rounded-lg relative overflow-hidden w-full shadow-lg">
+                                <div class="absolute inset-0 flex items-center justify-center text-slate-900 font-bold">
+                                    本来の市場価値
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 px-4 md:px-8 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-gold tracking-widest uppercase text-sm font-bold block mb-2">OUR STRENGTHS</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">私たちの<span class="text-gold-gradient">3つの強み</span></h2>
+                <div class="w-20 h-1 bg-gold mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-gold/50 transition-colors duration-300 flex flex-col items-center text-center group h-full">
+                    <div class="w-24 h-24 rounded-full bg-slate-900 border border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-slate-900 transition-colors duration-300 relative overflow-hidden text-gold">
+                        <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 60V24L32 14L46 24V60" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M18 60H46" stroke-linecap="round" />
+                            <rect x="24" y="30" width="4" height="6" rx="1" />
+                            <rect x="36" y="30" width="4" height="6" rx="1" />
+                            <rect x="24" y="42" width="4" height="6" rx="1" />
+                            <rect x="36" y="42" width="4" height="6" rx="1" />
+                            <path d="M48 40L60 20" stroke-width="3" stroke-linecap="round" />
+                            <path d="M60 20H50" stroke-width="3" stroke-linecap="round" />
+                            <path d="M60 20V30" stroke-width="3" stroke-linecap="round" />
+                            <circle cx="56" cy="14" r="4" stroke-width="2" />
+                            <path d="M54 14H58" stroke-width="2" />
+                            <path d="M56 12V16" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-4 text-white">不動産エージェント個人の投資実績</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">メンバー個人平均で4件の区分タワーマンション物件の購入実績。また1物件売却における平均キャピタルゲイン額は約4,000万円です。</p>
+                </div>
+
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-gold/50 transition-colors duration-300 flex flex-col items-center text-center group h-full">
+                    <div class="w-24 h-24 rounded-full bg-slate-900 border border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-slate-900 transition-colors duration-300 relative overflow-hidden text-gold">
+                        <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10 20L20 14L44 22L54 16" stroke-opacity="0.4" stroke-linecap="round" />
+                            <path d="M10 20V50L20 44" stroke-opacity="0.4" stroke-linecap="round" />
+                            <path d="M44 22V52L54 46V16" stroke-opacity="0.4" stroke-linecap="round" />
+                            <circle cx="28" cy="32" r="14" stroke-width="3" />
+                            <path d="M38 42L50 54" stroke-width="4" stroke-linecap="round" />
+                            <circle cx="28" cy="32" r="4" fill="currentColor" />
+                            <path d="M28 18V22" stroke-width="2" />
+                            <path d="M28 42V46" stroke-width="2" />
+                            <path d="M14 32H18" stroke-width="2" />
+                            <path d="M38 32H42" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-4 text-white">経験に基づく物件選定</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">単純な「見込みキャピタルゲイン額」だけでなく、エリア将来性等の資産価値維持要素を分析。将来的な物件価格上昇が狙える物件のみをご提案します。</p>
+                </div>
+
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-gold/50 transition-colors duration-300 flex flex-col items-center text-center group h-full">
+                    <div class="w-24 h-24 rounded-full bg-slate-900 border border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-slate-900 transition-colors duration-300 relative overflow-hidden text-gold">
+                        <svg class="w-16 h-16" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 8H42L54 20V56H14V8Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M42 8V20H54" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 46V38" stroke-width="2" stroke-linecap="round" />
+                            <path d="M30 46V30" stroke-width="2" stroke-linecap="round" />
+                            <path d="M38 46V24" stroke-width="2" stroke-linecap="round" />
+                            <path d="M46 46V34" stroke-width="2" stroke-linecap="round" />
+                            <path d="M22 18H34" stroke-width="2" />
+                            <path d="M28 15V21" stroke-width="2" />
+                            <circle cx="42" cy="18" r="3" />
+                        </svg>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold mb-4 text-white">精緻なシミュレーション作成</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">表面利回りだけでなく、管理費・修繕積立金や税金、将来の売却想定価を合算した「実質利回り・キャピタルゲインシミュレーション作成」で、意思決定を支援します。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 md:py-24 px-4 md:px-8 bg-slate-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-gold tracking-widest uppercase text-sm font-bold block mb-2">FLOW</span>
+                <h2 class="font-serif text-3xl md:text-4xl font-bold mb-4">お問い合わせ後の<span class="text-gold">ご支援フロー</span></h2>
+                <div class="w-20 h-1 bg-gold mx-auto"></div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-y-16 gap-x-12 relative z-10">
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                    <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+                    
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 01</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="18" y="8" width="28" height="48" rx="4" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M18 16H46" stroke-width="1" />
+                            <path d="M18 48H46" stroke-width="1" />
+                            <circle cx="32" cy="52" r="2" />
+                            <path d="M28 12H36" stroke-linecap="round" />
+                            <path d="M26 29C26 29 28 31 30 31C33 31 36 27 38 27" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">ヒアリング</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">お電話によるお客様ニーズ、資産状況等のヒアリング</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                    <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+                    
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 02</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 8H40L52 20V56H16V8Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M24 44L30 38L36 42L44 30" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M40 30H44V34" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M24 24H36" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">ご提案</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">物件・実質利回り・キャピタルゲインシミュレーションご提案</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                    <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 03</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 10H44V54H12V10Z" stroke-linecap="round" />
+                            <path d="M18 20H38" stroke-linecap="round" />
+                            <path d="M18 28H38" stroke-linecap="round" />
+                            <path d="M18 36H30" stroke-linecap="round" />
+                            <path d="M36 46L54 28L58 32L40 50L34 52L36 46Z" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">媒介契約締結</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">お客様（買主様）と弊社間での媒介契約締結</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                    <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 04</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 56H56" stroke-linecap="round" />
+                            <path d="M12 56V24" stroke-linecap="round" />
+                            <path d="M52 56V24" stroke-linecap="round" />
+                            <path d="M8 24H56" stroke-linecap="round" />
+                            <path d="M32 10L56 24H8L32 10Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M20 56V24" stroke-linecap="round" />
+                            <path d="M32 56V24" stroke-linecap="round" />
+                            <path d="M44 56V24" stroke-linecap="round" />
+                            <circle cx="50" cy="46" r="10" fill="#1e293b" stroke-width="0" />
+                            <circle cx="50" cy="46" r="8" stroke-width="2" />
+                            <path d="M47 44L50 47L53 44" stroke-linecap="round" />
+                            <path d="M50 47V51" stroke-linecap="round" />
+                            <path d="M46 48H54" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">金融機関選定・調整サポート</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">購入物件とお客様の資金計画に適した金融機関の選定、金融機関からの融資に向けた各種調整のサポート</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                    <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 05</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 8H42L54 20V56H14V8Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M22 20H34" stroke-linecap="round" />
+                            <path d="M22 28H46" stroke-linecap="round" />
+                            <path d="M22 36H46" stroke-linecap="round" />
+                            <circle cx="42" cy="46" r="8" stroke-width="2" />
+                            <path d="M39 46H45" stroke-linecap="round" />
+                            <path d="M42 43V49" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">売買契約締結</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">仲介手数料は物件価格の～3%</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                     <div class="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                     <div class="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-gold">STEP 06</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="24" cy="40" r="8" stroke-width="2" />
+                            <path d="M29 34L46 17" stroke-width="2" stroke-linecap="round" />
+                            <path d="M46 17V24" stroke-linecap="round" />
+                            <path d="M40 23V28" stroke-linecap="round" />
+                            <ellipse cx="48" cy="48" rx="10" ry="4" stroke-width="2" />
+                            <path d="M38 48V54C38 56.2 42.5 58 48 58C53.5 58 58 56.2 58 54V48" stroke-linecap="round" />
+                            <path d="M38 44V38" stroke-linecap="round" stroke-dasharray="2 2" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">決済・引渡し</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">決済・引き渡しに向けた売主・金融機関側との調整を実施</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center text-center w-full md:w-56 relative group">
+                    <div class="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-lg">
+                        <div class="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                            <span class="font-bold text-xs tracking-widest text-slate-300">OPTION</span>
+                        </div>
+                        <svg class="w-10 h-10 text-gold" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 32L24 12L44 32V58H4V32Z" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M14 58V38H34V58" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M36 16H56C58.2 16 60 17.8 60 20V40C60 42.2 58.2 44 56 44H42L34 50V20C34 17.8 35.8 16 38 16Z" fill="#0f172a" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="42" cy="30" r="2" fill="currentColor" />
+                            <circle cx="48" cy="30" r="2" fill="currentColor" />
+                            <circle cx="54" cy="30" r="2" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <div class="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                        <h3 class="font-serif text-xl font-bold mb-3 text-white">借主立ち退き交渉アドバイス</h3>
+                        <p class="text-slate-400 text-sm leading-relaxed">空室時期を早めたい場合、お客様（オーナー）と借主間の立ち退き料・期日の交渉に向けたアドバイスの実施</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-16 flex flex-col items-center">
+                 <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="inline-flex items-center justify-center bg-gold-gradient text-slate-900 font-bold py-4 px-10 rounded-full text-lg md:text-xl shadow-lg hover:scale-105 transition duration-300 w-full md:w-auto">
+                     無料で含み益物件の提案を受ける
+                 </a>
+                 <span class="text-xs md:text-sm text-gold mt-2">※ 高含み益かつ価格上昇の狙える物件を選定しご提案</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-4 bg-slate-900">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="font-serif text-3xl font-bold mb-12 text-center text-white">よくある質問</h2>
+            <div class="space-y-4">
+                
+                <div class="faq-item bg-slate-800 rounded-lg border border-slate-700 overflow-hidden hover:border-gold/30 transition-colors">
+                    <button class="faq-toggle w-full p-4 md:p-6 text-left flex justify-between items-center group cursor-pointer bg-transparent border-none">
+                        <div class="flex gap-4 pr-6 flex-1">
+                            <span class="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <span class="font-bold text-slate-200 text-base md:text-lg pt-1">自己資金はどのくらい必要ですか？</span>
+                        </div>
+                        <span class="icon-plus shrink-0 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-gold transition-all duration-300 group-hover:border-gold">＋</span>
+                    </button>
+                    <div class="faq-answer bg-slate-900/50">
+                        <div class="p-4 md:p-6 flex gap-4 border-t border-slate-700">
+                            <span class="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed pt-1">物件価格の10〜50%程度が目安となりますが、金融機関によってはフルローンのご相談も可能な場合があります。お客様の属性に合わせたプランをご提案します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-800 rounded-lg border border-slate-700 overflow-hidden hover:border-gold/30 transition-colors">
+                    <button class="faq-toggle w-full p-4 md:p-6 text-left flex justify-between items-center group cursor-pointer bg-transparent border-none">
+                        <div class="flex gap-4 pr-6 flex-1">
+                            <span class="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <span class="font-bold text-slate-200 text-base md:text-lg pt-1">入居者（借主）の退去を早めたい場合、立ち退き料はどのくらい必要ですか？</span>
+                        </div>
+                        <span class="icon-plus shrink-0 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-gold transition-all duration-300 group-hover:border-gold">＋</span>
+                    </button>
+                    <div class="faq-answer bg-slate-900/50">
+                        <div class="p-4 md:p-6 flex gap-4 border-t border-slate-700">
+                            <span class="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed pt-1">立ち退き料の相場は「引っ越し料金＋家賃3～6ヶ月分」が自己資金の目安となります。弊社での立ち退き交渉アドバイスにより立ち退き料を最小化しつつ、立ち退き料を差し引いた場合でも大幅キャピタルゲインの獲得が見込める物件をご提案いたします。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-800 rounded-lg border border-slate-700 overflow-hidden hover:border-gold/30 transition-colors">
+                    <button class="faq-toggle w-full p-4 md:p-6 text-left flex justify-between items-center group cursor-pointer bg-transparent border-none">
+                        <div class="flex gap-4 pr-6 flex-1">
+                            <span class="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <span class="font-bold text-slate-200 text-base md:text-lg pt-1">物件情報はどのように入手していますか？</span>
+                        </div>
+                        <span class="icon-plus shrink-0 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-gold transition-all duration-300 group-hover:border-gold">＋</span>
+                    </button>
+                    <div class="faq-answer bg-slate-900/50">
+                        <div class="p-4 md:p-6 flex gap-4 border-t border-slate-700">
+                            <span class="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed pt-1">主にレインズ（不動産流通機構）に掲載されている物件情報を元に、弊社不動産エージェントが選定・シミュレーションを行った物件をご提案いたします。</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="faq-item bg-slate-800 rounded-lg border border-slate-700 overflow-hidden hover:border-gold/30 transition-colors">
+                    <button class="faq-toggle w-full p-4 md:p-6 text-left flex justify-between items-center group cursor-pointer bg-transparent border-none">
+                        <div class="flex gap-4 pr-6 flex-1">
+                            <span class="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <span class="font-bold text-slate-200 text-base md:text-lg pt-1">オーナーチェンジ物件に住むことは可能ですか？</span>
+                        </div>
+                        <span class="icon-plus shrink-0 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-gold transition-all duration-300 group-hover:border-gold">＋</span>
+                    </button>
+                    <div class="faq-answer bg-slate-900/50">
+                        <div class="p-4 md:p-6 flex gap-4 border-t border-slate-700">
+                            <span class="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed pt-1">入居者（借主）退去後であれば可能で、市場価格より20～30％安くタワーマンションを購入できるケースが多いです。居住を見越した物件購入をされる場合、「銀行ローン借り換え費用＋立ち退き料」を考慮したシミュレーションを算出いたします。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-slate-800 rounded-lg border border-slate-700 overflow-hidden hover:border-gold/30 transition-colors">
+                    <button class="faq-toggle w-full p-4 md:p-6 text-left flex justify-between items-center group cursor-pointer bg-transparent border-none">
+                        <div class="flex gap-4 pr-6 flex-1">
+                            <span class="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <span class="font-bold text-slate-200 text-base md:text-lg pt-1">物件購入時に内見は可能ですか？</span>
+                        </div>
+                        <span class="icon-plus shrink-0 w-8 h-8 rounded-full border border-slate-600 flex items-center justify-center text-gold transition-all duration-300 group-hover:border-gold">＋</span>
+                    </button>
+                    <div class="faq-answer bg-slate-900/50">
+                        <div class="p-4 md:p-6 flex gap-4 border-t border-slate-700">
+                            <span class="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p class="text-slate-400 text-sm md:text-base leading-relaxed pt-1">入居者（借主）が退去していない場合は、内見を行わずに物件購入いただくことになります。入居者（借主）退去後であれば内見可能です。</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-4 bg-slate-900 text-center border-t border-slate-800 relative z-10">
+        <h2 class="font-serif text-3xl md:text-5xl font-bold mb-8 text-white">
+            あなたの資産形成を、<br><span class="text-gold-gradient">次のステージへ</span>
+        </h2>
+        <p class="text-slate-300 mb-12 max-w-2xl mx-auto">
+            優良なタワーマンションオーナーチェンジ物件情報や、<br>個別のシミュレーションをご希望の方は、まずはお気軽にお問い合わせください。
+        </p>
+        
+        <a href="https://forms.office.com/r/6w1nJAqbmV" target="_blank" class="inline-flex items-center justify-center bg-gold-gradient text-slate-900 font-bold py-4 px-12 rounded-full text-xl shadow-lg hover:scale-105 transition duration-300 w-full md:w-auto">
+            無料で含み益物件の提案を受ける
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <p class="text-xs md:text-sm text-gold mt-4">※ 高含み益かつ価格上昇の狙える物件を選定しご提案</p>
+    </section>
+
+    <footer class="bg-slate-950 py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+        <div class="flex justify-center items-center gap-2 mb-4">
+            <div class="w-6 h-6 rounded bg-slate-800 border border-slate-700 flex items-center justify-center">
+                <span class="text-gold font-bold text-xs">T</span>
+            </div>
+            <span class="font-serif font-bold text-slate-300">TOWER ARBITRAGE</span>
+        </div>
+        <p>&copy; 2026 Win Rate inc. All Rights Reserved.</p>
+    </footer>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // FAQ開閉ロジック
+    const toggles = document.querySelectorAll('.faq-toggle');
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const answer = toggle.nextElementSibling;
+            
+            if (answer.style.maxHeight) {
+                // 閉じる
+                answer.style.maxHeight = null;
+                answer.style.opacity = 0;
+                toggle.classList.remove('active');
+            } else {
+                // 開く
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.opacity = 1;
+                toggle.classList.add('active');
+            }
+        });
+    });
+
+    // フェードインアニメーション
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+    });
+});
+</script>
+
+</body>
+</html>
