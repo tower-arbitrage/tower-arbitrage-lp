@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOWER ARBITRAGE | タワーマンション オーナーチェンジ物件特化 購入サポート</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Fixed: Use specific version of Lucide to ensure toSvg() method exists -->
+    <script src="https://unpkg.com/lucide@0.263.1"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .font-serif {
+            font-family: 'Noto Serif JP', serif;
+        }
+        
+        /* Custom Gold Colors */
+        .text-gold {
+            color: #D4AF37;
+        }
+        .bg-gold {
+            background-color: #D4AF37;
+        }
+        .border-gold {
+            border-color: #D4AF37;
+        }
+        .bg-gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #D4AF37 100%);
+        }
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Lucid Icons wrapper component since we are using UMD build
+        const Icon = ({ name, size = 24, className = "" }) => {
+            const LucideIcons = window.lucide;
+            if (!LucideIcons) return null;
+            
+            const IconComponent = LucideIcons.icons[name];
+            if (!IconComponent) return null;
+
+            try {
+                // Convert kebab-case attributes to camelCase for React
+                return (
+                    <svg 
+                        xmlns="http://www.w3.org/2000/svg" 
+                        width={size} 
+                        height={size} 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        strokeWidth="2" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        className={className}
+                        dangerouslySetInnerHTML={{ __html: IconComponent.toSvg ? IconComponent.toSvg().match(/>(.*)<\/svg>/)[1] : "" }}
+                    />
+                );
+            } catch (e) {
+                console.error(`Error rendering icon ${name}:`, e);
+                return null;
+            }
+        };
+
+        // Custom Logo Component for Strengths
+        const StrengthLogo = ({ type }) => {
+            const className = "w-16 h-16 text-gold group-hover:text-slate-900 transition-colors duration-300";
+            
+            if (type === 'record') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Building */}
+                        <path d="M18 60V24L32 14L46 24V60" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M18 60H46" strokeLinecap="round" />
+                        {/* Windows */}
+                        <rect x="24" y="30" width="4" height="6" rx="1" />
+                        <rect x="36" y="30" width="4" height="6" rx="1" />
+                        <rect x="24" y="42" width="4" height="6" rx="1" />
+                        <rect x="36" y="42" width="4" height="6" rx="1" />
+                        {/* Arrow Up & Yen Symbol implies Profit */}
+                        <path d="M48 40L60 20" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M60 20H50" strokeWidth="3" strokeLinecap="round" />
+                        <path d="M60 20V30" strokeWidth="3" strokeLinecap="round" />
+                        <circle cx="56" cy="14" r="4" strokeWidth="2" />
+                        <path d="M54 14H58" strokeWidth="2" />
+                        <path d="M56 12V16" strokeWidth="2" />
+                    </svg>
+                );
+            }
+            if (type === 'eye') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Map/Area Background */}
+                        <path d="M10 20L20 14L44 22L54 16" strokeOpacity="0.4" strokeLinecap="round" />
+                        <path d="M10 20V50L20 44" strokeOpacity="0.4" strokeLinecap="round" />
+                        <path d="M44 22V52L54 46V16" strokeOpacity="0.4" strokeLinecap="round" />
+                        {/* Magnifying Glass */}
+                        <circle cx="28" cy="32" r="14" strokeWidth="3" />
+                        <path d="M38 42L50 54" strokeWidth="4" strokeLinecap="round" />
+                        {/* Target/Check inside */}
+                        <circle cx="28" cy="32" r="4" fill="currentColor" className="text-gold group-hover:text-slate-900 transition-colors" />
+                        <path d="M28 18V22" strokeWidth="2" />
+                        <path d="M28 42V46" strokeWidth="2" />
+                        <path d="M14 32H18" strokeWidth="2" />
+                        <path d="M38 32H42" strokeWidth="2" />
+                    </svg>
+                );
+            }
+            if (type === 'simulation') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Document Outline */}
+                        <path d="M14 8H42L54 20V56H14V8Z" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M42 8V20H54" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Graph/Chart */}
+                        <path d="M22 46V38" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M30 46V30" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M38 46V24" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M46 46V34" strokeWidth="2" strokeLinecap="round" />
+                        {/* Calculation Symbols */}
+                        <path d="M22 18H34" strokeWidth="2" />
+                        <path d="M28 15V21" strokeWidth="2" />
+                        <circle cx="42" cy="18" r="3" />
+                    </svg>
+                );
+            }
+            return null;
+        };
+
+        // Custom Logo Component for Flow Steps
+        const FlowLogo = ({ type }) => {
+            const className = "w-10 h-10 text-gold";
+            
+            if (type === 'hearing') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Smartphone Body */}
+                        <rect x="18" y="8" width="28" height="48" rx="4" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Top Line */}
+                        <path d="M18 16H46" strokeWidth="1" />
+                        {/* Bottom Line */}
+                        <path d="M18 48H46" strokeWidth="1" />
+                        {/* Home Button */}
+                        <circle cx="32" cy="52" r="2" />
+                        {/* Speaker */}
+                        <path d="M28 12H36" strokeLinecap="round" />
+                        {/* Phone Icon on Screen */}
+                        <path d="M26 29C26 29 28 31 30 31C33 31 36 27 38 27" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                );
+            }
+            if (type === 'proposal') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Document */}
+                        <path d="M16 8H40L52 20V56H16V8Z" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Upward Graph */}
+                        <path d="M24 44L30 38L36 42L44 30" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M40 30H44V34" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Lines */}
+                        <path d="M24 24H36" strokeLinecap="round" />
+                    </svg>
+                );
+            }
+            if (type === 'contract_mediation') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Paper */}
+                        <path d="M12 10H44V54H12V10Z" strokeLinecap="round" />
+                        {/* Lines */}
+                        <path d="M18 20H38" strokeLinecap="round" />
+                        <path d="M18 28H38" strokeLinecap="round" />
+                        <path d="M18 36H30" strokeLinecap="round" />
+                        {/* Pen */}
+                        <path d="M36 46L54 28L58 32L40 50L34 52L36 46Z" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                );
+            }
+            if (type === 'bank_support') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Bank Icon */}
+                        <path d="M8 56H56" strokeLinecap="round" />
+                        <path d="M12 56V24" strokeLinecap="round" />
+                        <path d="M52 56V24" strokeLinecap="round" />
+                        <path d="M8 24H56" strokeLinecap="round" />
+                        <path d="M32 10L56 24H8L32 10Z" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M20 56V24" strokeLinecap="round" />
+                        <path d="M32 56V24" strokeLinecap="round" />
+                        <path d="M44 56V24" strokeLinecap="round" />
+                        {/* Yen Symbol */}
+                        <circle cx="50" cy="46" r="10" fill="#1e293b" strokeWidth="0" />
+                        <circle cx="50" cy="46" r="8" strokeWidth="2" />
+                        <path d="M47 44L50 47L53 44" strokeLinecap="round" />
+                        <path d="M50 47V51" strokeLinecap="round" />
+                        <path d="M46 48H54" strokeLinecap="round" />
+                    </svg>
+                );
+            }
+            if (type === 'contract_sales') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Contract Document with Stamp */}
+                        <path d="M14 8H42L54 20V56H14V8Z" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M22 20H34" strokeLinecap="round" />
+                        <path d="M22 28H46" strokeLinecap="round" />
+                        <path d="M22 36H46" strokeLinecap="round" />
+                        {/* Stamp/Seal */}
+                        <circle cx="42" cy="46" r="8" strokeWidth="2" />
+                        <path d="M39 46H45" strokeLinecap="round" />
+                        <path d="M42 43V49" strokeLinecap="round" />
+                    </svg>
+                );
+            }
+            if (type === 'settlement') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* Key */}
+                        <circle cx="24" cy="40" r="8" strokeWidth="2" />
+                        <path d="M29 34L46 17" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M46 17V24" strokeLinecap="round" />
+                        <path d="M40 23V28" strokeLinecap="round" />
+                        {/* Coins/Money */}
+                        <ellipse cx="48" cy="48" rx="10" ry="4" strokeWidth="2" />
+                        <path d="M38 48V54C38 56.2 42.5 58 48 58C53.5 58 58 56.2 58 54V48" strokeLinecap="round" />
+                        <path d="M38 44V38" strokeLinecap="round" strokeDasharray="2 2" />
+                    </svg>
+                );
+            }
+            if (type === 'negotiation') {
+                return (
+                    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+                        {/* House */}
+                        <path d="M4 32L24 12L44 32V58H4V32Z" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M14 58V38H34V58" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Speech Bubble overlaying to show Negotiation */}
+                        <path d="M36 16H56C58.2 16 60 17.8 60 20V40C60 42.2 58.2 44 56 44H42L34 50V20C34 17.8 35.8 16 38 16Z" fill="#0f172a" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                        {/* Dots in speech bubble */}
+                        <circle cx="42" cy="30" r="2" fill="currentColor" />
+                        <circle cx="48" cy="30" r="2" fill="currentColor" />
+                        <circle cx="54" cy="30" r="2" fill="currentColor" />
+                    </svg>
+                );
+            }
+            return null;
+        };
+
+
+        const Button = ({ children, className = "", onClick }) => (
+            <button 
+                onClick={onClick}
+                className={`
+                    bg-gold-gradient text-slate-900 font-bold py-4 px-8 rounded-full 
+                    shadow-[0_0_15px_rgba(212,175,55,0.4)] 
+                    hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] 
+                    hover:scale-105 transition-all duration-300 
+                    text-lg md:text-xl w-full md:w-auto text-center
+                    ${className}
+                `}
+            >
+                {children}
+            </button>
+        );
+
+        const Section = ({ children, className = "", id = "" }) => (
+            <section id={id} className={`py-16 md:py-24 px-4 md:px-8 ${className}`}>
+                <div className="max-w-6xl mx-auto">
+                    {children}
+                </div>
+            </section>
+        );
+
+        const FadeIn = ({ children, delay = 0 }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const domRef = React.useRef();
+
+            useEffect(() => {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => setIsVisible(entry.isIntersecting));
+                });
+                if (domRef.current) {
+                    observer.observe(domRef.current);
+                }
+                return () => {
+                    if (domRef.current) {
+                        observer.unobserve(domRef.current);
+                    }
+                };
+            }, []);
+
+            return (
+                <div
+                    ref={domRef}
+                    className={`transition-all duration-1000 transform ${
+                        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+                    }`}
+                    style={{ transitionDelay: `${delay}ms` }}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        // New FAQ Item Component
+        const FAQItem = ({ q, a }) => {
+            const [isOpen, setIsOpen] = useState(false);
+
+            return (
+                <div className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700 transition-all duration-300 hover:border-gold/30">
+                    <button 
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="w-full p-4 md:p-6 flex justify-between items-center text-left hover:bg-slate-700/50 transition-colors group"
+                    >
+                        <div className="flex gap-4 pr-6 flex-1">
+                            <span className="text-gold font-bold font-serif text-xl shrink-0">Q.</span>
+                            <h3 className="font-bold text-slate-200 pt-1 leading-snug">{q}</h3>
+                        </div>
+                        {/* Plus Button Design */}
+                        <div className={`shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? 'bg-gold border-gold rotate-45' : 'border-slate-600 group-hover:border-gold'}`}>
+                            <svg 
+                                width="20" 
+                                height="20" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round"
+                                className={`transition-colors duration-300 ${isOpen ? 'text-slate-900' : 'text-gold'}`}
+                            >
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </div>
+                    </button>
+                    <div 
+                        className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
+                    >
+                        <div className="p-4 md:p-6 bg-slate-900/50 flex gap-4 border-t border-slate-700">
+                            <span className="text-slate-500 font-bold font-serif text-xl shrink-0">A.</span>
+                            <p className="text-slate-400 text-sm leading-relaxed pt-1">{a}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const scrollToContact = () => {
+                const contactSection = document.getElementById('contact');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-slate-900 text-slate-100 overflow-x-hidden selection:bg-gold selection:text-slate-900">
+                    
+                    {/* Header */}
+                    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-700">
+                        {/* Changed py-4 to py-2 to reduce header height while keeping element sizes */}
+                        <div className="max-w-7xl mx-auto px-4 md:px-6 py-2 flex justify-between items-center">
+                            <div className="flex flex-col">
+                                <span className="text-xs md:text-sm text-gold tracking-wider mb-1">タワーマンション オーナーチェンジ物件特化 購入サポート「タワー アービトラージ」</span>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded bg-gold-gradient flex items-center justify-center">
+                                        <span className="text-slate-900 font-bold text-lg">T</span>
+                                    </div>
+                                    <span className="font-serif text-xl md:text-2xl font-bold tracking-widest text-white">TOWER ARBITRAGE</span>
+                                </div>
+                            </div>
+                            <button 
+                                onClick={scrollToContact}
+                                className="hidden md:block bg-gold-gradient text-slate-900 font-bold px-6 py-2 rounded shadow-[0_0_10px_rgba(212,175,55,0.3)] hover:scale-105 transition-all duration-300 text-sm tracking-widest uppercase"
+                            >
+                                無料提案依頼
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* Hero Section */}
+                    <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+                        {/* Abstract Background Elements */}
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-slate-800 to-transparent opacity-30"></div>
+                            <div className="absolute bottom-0 left-0 w-1/3 h-2/3 bg-gradient-to-t from-slate-800 to-transparent opacity-30"></div>
+                            {/* Grid overlay for tech/modern feel */}
+                            <div className="absolute inset-0 opacity-10" style={{backgroundImage: 'linear-gradient(#D4AF37 1px, transparent 1px), linear-gradient(90deg, #D4AF37 1px, transparent 1px)', backgroundSize: '40px 40px'}}></div>
+                        </div>
+
+                        <div className="container mx-auto px-4 relative z-10 text-center">
+                            <FadeIn delay={200}>
+                                <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+                                    <span className="block mb-4 text-white">タワーマンションの</span>
+                                    <span className="block mb-4 text-gold-gradient">投資物件と実需物件の市場価格差を</span>
+                                    <span className="block text-white">あなたの利益に</span>
+                                </h1>
+                            </FadeIn>
+
+                            <FadeIn delay={400}>
+                                <p className="text-slate-300 text-sm md:text-lg leading-relaxed max-w-3xl mx-auto mb-12">
+                                    中古タワーマンションのオーナーチェンジ物件は、借主入居中であるため<br className="hidden md:block"/>
+                                    <span className="text-white font-bold border-b border-gold">市場価格より20~30%割安</span>に購入できます。<br/>
+                                    借主退去後に居住用物件として売り出すことで、<span className="text-white font-bold border-b border-gold">市場価格での売却が見込めます</span>。
+                                </p>
+                            </FadeIn>
+
+                            <FadeIn delay={600}>
+                                <div className="flex flex-col items-center gap-3">
+                                    <Button onClick={scrollToContact}>
+                                        無料で含み益物件の提案を受ける
+                                        <Icon name="ChevronRight" size={20} className="inline ml-2" />
+                                    </Button>
+                                    <span className="text-xs md:text-sm text-gold mt-2">
+                                        ※ 高含み益かつ価格上昇の狙える物件を選定しご提案
+                                    </span>
+                                </div>
+                            </FadeIn>
+                        </div>
+                    </section>
+
+                    {/* Body 1: The Logic (Why 20% Cheaper?) */}
+                    <Section className="bg-slate-800 relative">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
+                        
+                        <div className="text-center mb-16">
+                            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                                なぜ、市場価格より<span className="text-gold">20%安く</span>買えるのか？
+                            </h2>
+                            <div className="w-20 h-1 bg-gold mx-auto"></div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-12 items-center">
+                            <FadeIn>
+                                <div className="space-y-6">
+                                    <p className="text-lg leading-relaxed text-slate-300">
+                                        不動産の価格は、その物件が<strong className="text-white">「投資用」</strong>か<strong className="text-white">「実需用（居住用）」</strong>かによって評価基準が全く異なります。
+                                    </p>
+                                    <p className="text-lg leading-relaxed text-slate-300">
+                                        入居者がいる状態（オーナーチェンジ）では、賃料利回りをベースとした「収益還元法」等で評価されるため、価格が抑えられがちです。
+                                    </p>
+                                    <p className="text-lg leading-relaxed text-slate-300">
+                                        しかし、退去して空室になれば、「自分が住みたい」という実需層がターゲットとなり、周辺の取引事例に基づいた市場価格での売却が見込めます。
+                                    </p>
+                                </div>
+                            </FadeIn>
+
+                            <FadeIn delay={200}>
+                                {/* Illustration of the price gap mechanism */}
+                                <div className="bg-slate-900 p-8 rounded-xl border border-slate-700 shadow-2xl relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                                        <Icon name="TrendingUp" size={100} className="text-gold" />
+                                    </div>
+
+                                    <div className="flex flex-col gap-8">
+                                        {/* Investment Price */}
+                                        <div className="relative">
+                                            <div className="flex justify-between items-end mb-2">
+                                                <span className="text-slate-400 font-bold">オーナーチェンジ価格</span>
+                                                <span className="text-2xl font-bold text-slate-300">8,000万円</span>
+                                            </div>
+                                            <div className="h-12 bg-slate-700 rounded-lg relative overflow-hidden w-4/5">
+                                                <div className="absolute inset-0 bg-slate-600/50 flex items-center justify-center text-sm text-slate-300">
+                                                    利回り評価による価格
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Gap Visualizer */}
+                                        <div className="flex items-center gap-4 text-gold">
+                                            <div className="flex-1 h-px bg-gold/30"></div>
+                                            <div className="flex flex-col items-center">
+                                                <Icon name="ArrowDown" size={32} />
+                                                <span className="font-bold text-2xl md:text-3xl whitespace-nowrap mt-1">2,000万円の価格差</span>
+                                                <span className="text-sm md:text-base opacity-80">(キャピタルゲイン源泉)</span>
+                                            </div>
+                                            <div className="flex-1 h-px bg-gold/30"></div>
+                                        </div>
+
+                                        {/* Market Price */}
+                                        <div className="relative">
+                                            <div className="flex justify-between items-end mb-2">
+                                                <span className="text-white font-bold">実需（空室）市場価格</span>
+                                                <span className="text-3xl font-bold text-gold">10,000万円</span>
+                                            </div>
+                                            <div className="h-12 bg-gold-gradient rounded-lg relative overflow-hidden w-full shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+                                                <div className="absolute inset-0 flex items-center justify-center text-slate-900 font-bold">
+                                                    本来の市場価値
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </FadeIn>
+                        </div>
+                    </Section>
+
+                    {/* Body 2: Our Strengths */}
+                    <Section className="bg-slate-900">
+                        <div className="text-center mb-16">
+                            <span className="text-gold tracking-widest uppercase text-sm font-bold block mb-2">OUR STRENGTHS</span>
+                            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                                私たちの<span className="text-gold-gradient">3つの強み</span>
+                            </h2>
+                            <div className="w-20 h-1 bg-gold mx-auto"></div>
+                        </div>
+
+                        <div className="grid md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    logoType: "record",
+                                    title: "不動産エージェント個人の投資実績",
+                                    desc: "メンバー個人平均で4件の区分タワーマンション物件の購入実績。また1物件売却における平均キャピタルゲイン額は約4,000万円です。"
+                                },
+                                {
+                                    logoType: "eye",
+                                    title: "経験に基づく物件選定",
+                                    desc: "単純な「見込みキャピタルゲイン額」だけでなく、エリア将来性等の資産価値維持要素を分析。将来的な物件価格上昇が狙える物件のみをご提案します。"
+                                },
+                                {
+                                    logoType: "simulation",
+                                    title: "精緻なシミュレーション作成",
+                                    desc: "表面利回りだけでなく、管理費・修繕積立金や税金、将来の売却想定価を合算した「実質利回り・キャピタルゲインシミュレーション作成」で、意思決定を支援します。"
+                                }
+                            ].map((item, index) => (
+                                <FadeIn key={index} delay={index * 200}>
+                                    <div className="bg-slate-800/50 p-8 rounded-2xl border border-slate-700 hover:border-gold/50 transition-colors duration-300 h-full flex flex-col items-center text-center group">
+                                        <div className="w-24 h-24 rounded-full bg-slate-900 border border-gold flex items-center justify-center mb-6 group-hover:bg-gold group-hover:text-slate-900 transition-colors duration-300 relative overflow-hidden">
+                                            {/* Glow Effect */}
+                                            <div className="absolute inset-0 bg-gold blur-xl opacity-20 group-hover:opacity-60 transition-opacity"></div>
+                                            <StrengthLogo type={item.logoType} />
+                                        </div>
+                                        <h3 className="font-serif text-xl font-bold mb-4 text-white">{item.title}</h3>
+                                        <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                                    </div>
+                                </FadeIn>
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* NEW SECTION: Flow */}
+                    <Section className="bg-slate-800">
+                        <div className="text-center mb-16">
+                            <span className="text-gold tracking-widest uppercase text-sm font-bold block mb-2">FLOW</span>
+                            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                                お問い合わせ後の<span className="text-gold">ご支援フロー</span>
+                            </h2>
+                            <div className="w-20 h-1 bg-gold mx-auto"></div>
+                        </div>
+
+                        <div className="relative">
+                            <div className="flex flex-wrap justify-center gap-y-16 gap-x-12 relative z-10 max-w-7xl mx-auto">
+                                {[
+                                    {
+                                        logoType: "hearing",
+                                        step: "01",
+                                        title: "ヒアリング",
+                                        desc: "お電話によるお客様ニーズ、資産状況等のヒアリング"
+                                    },
+                                    {
+                                        logoType: "proposal",
+                                        step: "02",
+                                        title: "ご提案",
+                                        desc: "物件・実質利回り・キャピタルゲインシミュレーションご提案"
+                                    },
+                                    {
+                                        logoType: "contract_mediation",
+                                        step: "03",
+                                        title: "媒介契約締結",
+                                        desc: "お客様（買主様）と弊社間での媒介契約締結"
+                                    },
+                                    {
+                                        logoType: "bank_support",
+                                        step: "04",
+                                        title: "金融機関選定・調整サポート",
+                                        desc: "購入物件とお客様の資金計画に適した金融機関の選定、金融機関からの融資に向けた各種調整のサポート"
+                                    },
+                                    {
+                                        logoType: "contract_sales",
+                                        step: "05",
+                                        title: "売買契約締結",
+                                        desc: "仲介手数料は物件価格の～3%"
+                                    },
+                                    {
+                                        logoType: "settlement",
+                                        step: "06",
+                                        title: "決済・引渡し",
+                                        desc: "決済・引き渡しに向けた売主・金融機関側との調整を実施"
+                                    },
+                                    {
+                                        logoType: "negotiation",
+                                        step: "Option",
+                                        title: "借主立ち退き交渉アドバイス",
+                                        desc: "空室時期を早めたい場合、お客様（オーナー）と借主間の立ち退き料・期日の交渉に向けたアドバイスの実施"
+                                    }
+                                ].map((item, index, array) => (
+                                    <FadeIn key={index} delay={index * 150}>
+                                        <div className="flex flex-col items-center text-center w-full md:w-56 relative group">
+                                            {/* Connector Line */}
+                                            {index < array.length - 1 && (
+                                                <>
+                                                    {/* Desktop: Horizontal Line Center-to-Center */}
+                                                    <div className="hidden md:block absolute top-12 left-1/2 w-[calc(100%+3rem)] h-[1px] bg-slate-700 z-0"></div>
+                                                    
+                                                    {/* Mobile: Vertical Line Center-to-Center */}
+                                                    <div className="md:hidden absolute top-12 left-1/2 w-[1px] h-[calc(100%+4rem)] bg-slate-700 z-0 -translate-x-1/2"></div>
+                                                </>
+                                            )}
+
+                                            {/* Icon Circle */}
+                                            <div className="relative z-10 w-24 h-24 rounded-full bg-slate-900 border-2 border-gold flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                                                <div className="absolute -top-3 bg-slate-800 px-2 py-0.5 rounded border border-slate-600">
+                                                    <span className={`font-bold text-xs tracking-widest ${item.step === "Option" ? "text-slate-300" : "text-gold"}`}>
+                                                        {item.step === "Option" ? "OPTION" : `STEP ${item.step}`}
+                                                    </span>
+                                                </div>
+                                                <FlowLogo type={item.logoType} />
+                                            </div>
+                                            
+                                            {/* Text Content */}
+                                            <div className="relative z-10 bg-slate-800/80 px-2 rounded-lg backdrop-blur-sm">
+                                                <h3 className="font-serif text-xl font-bold mb-3 text-white">{item.title}</h3>
+                                                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    </FadeIn>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mt-16 flex flex-col items-center">
+                             <div className="flex flex-col items-center gap-3 w-full max-w-md">
+                                <Button onClick={scrollToContact} className="w-full">
+                                    無料で含み益物件の提案を受ける
+                                </Button>
+                                <span className="text-xs md:text-sm text-gold mt-2">
+                                    ※ 高含み益かつ価格上昇の狙える物件を選定しご提案
+                                </span>
+                            </div>
+                        </div>
+                    </Section>
+
+                    {/* FAQ Section - Changed to bg-slate-900 to alternate colors */}
+                    <Section className="bg-slate-900">
+                        <div className="text-center mb-12">
+                            <h2 className="font-serif text-3xl font-bold mb-4">よくある質問</h2>
+                        </div>
+                        <div className="max-w-3xl mx-auto space-y-4">
+                            {[
+                                {
+                                    q: "自己資金はどのくらい必要ですか？",
+                                    a: "物件価格の10〜50%程度が目安となりますが、金融機関によってはフルローンのご相談も可能な場合があります。お客様の属性に合わせたプランをご提案します。"
+                                },
+                                {
+                                    q: "入居者（借主）の退去を早めたい場合、立ち退き料はどのくらい必要ですか？",
+                                    a: "立ち退き料の相場は　引っ越し料金＋家賃3～6ヶ月分　が自己資金の目安となります。弊社での立ち退き交渉アドバイスにより立ち退き料を最小化しつつ、立ち退き料を差し引いた場合でも大幅キャピタルゲインの獲得が見込める物件をご提案いたします。"
+                                },
+                                {
+                                    q: "物件情報はどのように入手していますか？",
+                                    a: "主にレインズ（不動産流通機構）に掲載されている物件情報を元に、弊社不動産エージェントが選定・シミュレーションを行った物件をご提案いたします。"
+                                },
+                                {
+                                    q: "オーナーチェンジ物件に住むことは可能ですか？",
+                                    a: "入居者（借主）退去後であれば可能で、市場価格より20～30％安くタワーマンションを購入できるケースが多いです。居住を見越した物件購入をされる場合、銀行ローン借り換え費用＋立ち退き料　を考慮したシミュレーションを算出いたします。"
+                                },
+                                {
+                                    q: "物件購入時に内見は可能ですか？",
+                                    a: "入居者（借主）が退去していない場合は、内見を行わずに物件購入いただくことになります。入居者（借主）退去後であれば内見可能です。"
+                                }
+                            ].map((faq, i) => (
+                                <FadeIn key={i} delay={i * 100}>
+                                    <FAQItem q={faq.q} a={faq.a} />
+                                </FadeIn>
+                            ))}
+                        </div>
+                    </Section>
+
+                    {/* Contact/Final CTA Section */}
+                    <section id="contact" className="py-20 px-4 bg-slate-900 relative border-t border-slate-800">
+                        <div className="max-w-4xl mx-auto text-center relative z-10">
+                            <h2 className="font-serif text-3xl md:text-5xl font-bold mb-8 text-white">
+                                あなたの資産形成を、<br/>
+                                <span className="text-gold-gradient">次のステージへ</span>
+                            </h2>
+                            <p className="text-slate-300 mb-12 max-w-2xl mx-auto">
+                                優良なタワーマンションオーナーチェンジ物件情報や、
+                                個別のシミュレーションをご希望の方は、まずはお気軽にお問い合わせください。
+                            </p>
+                            
+                            <div className="flex flex-col items-center gap-3">
+                                <Button onClick={() => console.log("Contact clicked")}>
+                                    無料で含み益物件の提案を受ける
+                                    <Icon name="ChevronRight" size={20} className="inline ml-2" />
+                                </Button>
+                                <span className="text-xs md:text-sm text-gold mt-2">
+                                    ※ 高含み益かつ価格上昇の狙える物件を選定しご提案
+                                </span>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Footer */}
+                    <footer className="bg-slate-950 py-8 border-t border-slate-800 text-center text-slate-500 text-sm">
+                        <div className="flex justify-center items-center gap-2 mb-4">
+                            <div className="w-6 h-6 rounded bg-slate-800 border border-slate-700 flex items-center justify-center">
+                                <span className="text-gold font-bold text-xs">T</span>
+                            </div>
+                            <span className="font-serif font-bold text-slate-300">TOWER ARBITRAGE</span>
+                        </div>
+                        <p>&copy; 2026 Win Rate inc. All Rights Reserved.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
